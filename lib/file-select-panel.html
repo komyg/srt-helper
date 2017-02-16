@@ -1,13 +1,19 @@
-<atom-panel class='modal'>
-	<h2>Please select file.</h2>
-	<div id='open-files-list' class='select-list'>
-		<ol class='list-group' />
+<atom-panel class='modal padded'>
+
+	<div class='panel-heading-centered padded'>
+		<h1>Please select file.</h1>
 	</div>
 
-	<br />
-	<div class='block'>
-		<button id='ok-button' class='inline-block'>Ok</button>
-		<button id='cancel-button' class='inline-block'>Cancel</button>
+	<div class='panel-body'>
+		<div class='select-list'>
+			<ol id='open-files-list' class='list-group' />
+		</div>
+
+		<br />
+		<div class='block-centered'>
+			<button id='ok-button' class='inline-block btn btn-lg'>Ok</button>
+			<button id='cancel-button' class='inline-block btn btn-lg'>Cancel</button>
+		</div>
 	</div>
 
 </atom-panel>
