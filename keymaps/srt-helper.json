@@ -1,5 +1,6 @@
 {
-  "atom-workspace": {
-    "ctrl-alt-o": "srt-helper:srtCopyPaste"
+  "atom-workspace":
+  {
+    "ctrl-alt-m": "srt-helper:srtCopyPaste"
   }
 }

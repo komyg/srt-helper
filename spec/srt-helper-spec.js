@@ -17,7 +17,7 @@ describe('SrtHelper', () =>
 		activationPromise = atom.packages.activatePackage('srt-helper');
 	});
 
-	describe('when the - Untranslated subtilte - string is found', () =>
+	describe('SrtHelper Unit Tests', () =>
 	{
 		it('should replace the - Untranslated subtitle - with the selectedText', () =>
 		{
@@ -40,63 +40,137 @@ describe('SrtHelper', () =>
 			expect(fakeIterator.newText).toEqual('Lorem ipsum');
 
 		});
+
+		it('should select an editor from all open editors', () =>
+		{
+			// Setup
+			let fakeTextEditor1 = jasmine.createSpyObj('fakeTextEditor', ['getTitle']);
+			let fakeTextEditor2 = jasmine.createSpyObj('fakeTextEditor', ['getTitle']);
+			let fakeTextEditorsArray = new Array();
+
+			fakeTextEditor1.getTitle.andCallFake(() => { return 'dummy-file.txt' });
+			fakeTextEditor2.getTitle.andCallFake(() => { return 'dummy-srt-file.srt' });
+
+			fakeTextEditorsArray.push(fakeTextEditor1);
+			fakeTextEditorsArray.push(fakeTextEditor2);
+
+			spyOn(atom.workspace, 'getTextEditors').andReturn(fakeTextEditorsArray);
+
+			// destEditor should be null the first time.
+			expect(SrtHelper.destEditor).toBeNull();
+
+			// Call function
+			SrtHelper.setDestEditor('dummy-srt-file.srt')
+
+			// Assert
+			expect(SrtHelper.destEditor.getTitle()).toEqual('dummy-srt-file.srt');
+
+			// Teardown
+			SrtHelper.destEditor = null;
+		});
 	});
 
-/*
-	  describe('when the srt-helper:toggle event is triggered', () => {
-		  it('hides and shows the modal panel', () => {
-			  // Before the activation event the view is not on the DOM, and no panel
-			  // has been created
-			  expect(workspaceElement.querySelector('.srt-helper')).not.toExist();
+	describe('SrtHelper integration tests', () =>
+	{
+		beforeEach(() =>
+		{
+			let dummyFileTxtEditor;
 
-			  // This is an activation event, triggering it will cause the package to be
-			  // activated.
-			  atom.commands.dispatch(workspaceElement, 'srt-helper:toggle');
-
-			  waitsForPromise(() => {
-				  return activationPromise;
-			  });
-
-			  runs(() => {
-				  expect(workspaceElement.querySelector('.srt-helper')).toExist();
-
-				  let srtHelperElement = workspaceElement.querySelector('.srt-helper');
-				  expect(srtHelperElement).toExist();
-
-				  let srtHelperPanel = atom.workspace.panelForItem(srtHelperElement);
-				  expect(srtHelperPanel.isVisible()).toBe(true);
-				  atom.commands.dispatch(workspaceElement, 'srt-helper:toggle');
-				  expect(srtHelperPanel.isVisible()).toBe(false);
-			  });
-	    });
-
-		it('hides and shows the view', () => {
-			// This test shows you an integration test testing at the view level.
-
-			// Attaching the workspaceElement to the DOM is required to allow the
-			// `toBeVisible()` matchers to work. Anything testing visibility or focus
-			// requires that the workspaceElement is on the DOM. Tests that attach the
-			// workspaceElement to the DOM are generally slower than those off DOM.
 			jasmine.attachToDOM(workspaceElement);
+
+			// Open two dummy files in the text editor
+			waitsForPromise(() =>
+			{
+				return atom.workspace.open('dummy-file.txt').then((editor) => {
+					dummyFileTxtEditor = editor;
+				});
+			});
+
+			waitsForPromise(() =>
+			{
+				return atom.workspace.open('dummy-srt-file.srt');
+			});
+
+			runs(() =>
+			{
+				atom.workspace.getActivePane().activateItem(dummyFileTxtEditor);
+			});
+		});
+
+		it('should set the destination editor as dummy-srt-file', () =>
+		{
+			expect(SrtHelper.destEditor).toBeNull();
+
+			// Choose destination editor.
+			SrtHelper.setDestEditor('dummy-srt-file.srt')
+
+			expect(SrtHelper.destEditor.getTitle()).toEqual('dummy-srt-file.srt');
+
+			// Get the active text editor
+			let activeEditor = atom.workspace.getActiveTextEditor();
+			expect(activeEditor.getTitle()).toBe('dummy-file.txt');
+
+			// Select some text from it.
+			activeEditor.selectLeft(27);
+			let selection = activeEditor.getSelectedText();
+
+			// Add this text to the destination editor.
+			SrtHelper.srtCopyPaste();
+
+			// Check if the operation succeded.
+			expect(SrtHelper.destEditor.getText()).toMatch(selection);
+		});
+
+		it('shows the view when the destination editor is not set', () =>
+		{
+			SrtHelper.destEditor = null;
 
 			expect(workspaceElement.querySelector('.srt-helper')).not.toExist();
 
-			// This is an activation event, triggering it causes the package to be
-			// activated.
-			atom.commands.dispatch(workspaceElement, 'srt-helper:toggle');
+			// This is an activation event, triggering it causes the package to be activated.
+			atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
 
-			waitsForPromise(() => {
+			waitsForPromise(() =>
+			{
 				return activationPromise;
 			});
 
-			runs(() => {
+			runs(() =>
+			{
 				// Now we can test for view visibility
 				let srtHelperElement = workspaceElement.querySelector('.srt-helper');
 				expect(srtHelperElement).toBeVisible();
-				atom.commands.dispatch(workspaceElement, 'srt-helper:toggle');
-				expect(srtHelperElement).not.toBeVisible();
+				atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
 			});
 		});
+
+		it ('does not show the view when the destination editor is set', () =>
+		{
+			SrtHelper.setDestEditor('dummy-srt-file.srt');
+
+			expect(workspaceElement.querySelector('.srt-helper')).not.toExist();
+
+			// This is an activation event, triggering it causes the package to be activated.
+			atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
+
+			waitsForPromise(() =>
+			{
+				return activationPromise;
+			});
+
+			runs(() =>
+			{
+				// Now we can test for view visibility
+				let srtHelperElement = workspaceElement.querySelector('.srt-helper');
+				expect(srtHelperElement).not.toBeVisible();
+				atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
+			});
+		});
+
+		afterEach(() =>
+		{
+			// Set the destination editor to null.
+			SrtHelper.destEditor = null;
+		});
 	});
-	*/
 });
