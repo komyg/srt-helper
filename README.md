@@ -42,6 +42,8 @@ When the **Srt copy paste** command is ran for the first time, it will open a di
 
 If you want to change the destination editor, please run the **Choose destination editor** command.
 
+![alt tag](https://cloud.githubusercontent.com/assets/25157901/23125709/e5e72360-f751-11e6-9fdd-9abfdc1d2f0a.gif)
+
 ## Tests
 
 The tests can be ran through the standard test interface in Atom (they were all written using ![Jasmine](https://jasmine.github.io/))
