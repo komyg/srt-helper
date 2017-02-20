@@ -1,9 +1,13 @@
 {
   "name": "srt-helper",
   "main": "./lib/srt-helper",
-  "version": "1.0.0",
-  "description": "This was created to facilitate copying and pasting text to an srt file that already has its time codes.",
-  "keywords": [
+  "version": "0.0.0",
+  "description": "This package is meant to help with the translation of srt subtitle files.",
+  "keywords": [ "srt-helper",
+	  "srt",
+	  "subtitle",
+	  "subtitles",
+	  "translation"
   ],
   "activationCommands": {
     "atom-workspace": ["srt-helper:srtCopyPaste", "srt-helper:srtChooseDestEditor"]
