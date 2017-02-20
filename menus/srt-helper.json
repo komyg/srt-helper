@@ -2,7 +2,7 @@
   "context-menu": {
     "atom-text-editor": [
       {
-        "label": "Srt copy paste - ctr-alt-m",
+        "label": "Srt copy paste",
         "command": "srt-helper:srtCopyPaste"
       }
     ]
@@ -14,7 +14,7 @@
         {
           "label": "Srt Helper",
           "submenu": [
-            { "label": "Srt copy paste - ctrl-alt-m", "command": "srt-helper:srtCopyPaste" },
+            { "label": "Srt copy paste", "command": "srt-helper:srtCopyPaste" },
             { "label": "Choose destination editor",	"command": "srt-helper:srtChooseDestEditor"	}
           ]
         }
