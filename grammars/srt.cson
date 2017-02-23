@@ -1,0 +1,14 @@
+'scopeName': 'source.srt'
+'name:': 'SRT'
+'fileTypes': ['SRT']
+
+'patterns': [
+	{
+		'match': '^- Untranslated subtitle -$'
+		'name': 'untranslated'
+	},
+	{
+		'match': '.{40,}'
+		'name': 'copied-text'
+	}
+]
