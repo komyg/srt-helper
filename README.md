@@ -34,7 +34,7 @@ This command can only be called through the *Packages* menu.
 
 This command will copy the currently selected text and paste it in place of the first *- Untranslated subtitle -* tag it finds in the destination editor (the text editor that contains the untranslated subtitles).
 
-This command can be called through the *Packages* menu, through the context-menu or through the hot keys: **ctrl-alt-m**.
+This command can be called through the *Packages* menu, through the context-menu or through the hot keys: **ctrl-alt-p**.
 
 ## Usage
 
