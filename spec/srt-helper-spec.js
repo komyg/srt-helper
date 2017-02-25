@@ -21,14 +21,25 @@ describe('SrtHelper', () =>
 	{
 		it('should replace the - Untranslated subtitle - with the selectedText', () =>
 		{
-			let fakeEditor, fakeIterator;
+			let fakeEditor, fakeIterator, fakeDestEditor, fakePoint, fakeRange;
+
+			fakePoint = [1, 2];
 
 			// Build fake iterator object.
-			fakeIterator = jasmine.createSpyObj('fakeIterator', ['stop', 'replace']);
+			fakeIterator = jasmine.createSpyObj('fakeIterator', ['stop', 'range', 'replace']);
 
 			fakeIterator.replace.andCallFake((replacementText) => {
 				fakeIterator.newText = replacementText;
 			});
+
+			// Build fake dest editor to test changing its cursor.
+			fakeDestEditor = jasmine.createSpyObj('fakeDestEditor', ['setCursorBufferPosition']);
+			fakeRange = jasmine.createSpyObj('fakeRange', ['start']);
+			fakeIterator.range = fakeRange;
+			fakeRange.start = fakePoint;
+
+			//fakeDestEditor.setCursorBufferPosition.andReturn('');
+			SrtHelper.destEditor = fakeDestEditor;
 
 			// Build fake text editor.
 			fakeEditor = atom.workspace.buildTextEditor();
@@ -37,8 +48,14 @@ describe('SrtHelper', () =>
 
 			SrtHelper.replaceString(fakeIterator);
 
+			// Check if the replaced text matches.
 			expect(fakeIterator.newText).toEqual('Lorem ipsum');
 
+			// Check if the buffer is set to the position of the repaced text.
+			expect(fakeDestEditor.setCursorBufferPosition).toHaveBeenCalledWith(fakePoint, { autoscroll: false });
+
+			// Teardown
+			SrtHelper.destEditor = null;
 		});
 
 		it('should select an editor from all open editors', () =>
@@ -60,7 +77,7 @@ describe('SrtHelper', () =>
 			expect(SrtHelper.destEditor).toBeNull();
 
 			// Call function
-			SrtHelper.setDestEditor('dummy-srt-file.srt')
+			SrtHelper.setDestEditor('dummy-srt-file.srt');
 
 			// Assert
 			expect(SrtHelper.destEditor.getTitle()).toEqual('dummy-srt-file.srt');
