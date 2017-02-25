@@ -89,6 +89,16 @@ describe('SrtHelper', () =>
 			// Teardown
 			SrtHelper.destEditor = null;
 		});
+
+		it('should transform upper case string into title case string', () =>
+		{
+			let testStr = 'LOREM I1PSUM DOLOR SIT AMET, 22,';
+			let result;
+
+			result = SrtHelper.changeCase(testStr);
+
+			expect(result).toEqual('Lorem I1psum Dolor Sit Amet, 22,');
+		});
 	});
 
 	describe('SrtHelper integration tests', () =>
