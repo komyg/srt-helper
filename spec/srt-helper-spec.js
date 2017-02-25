@@ -45,6 +45,7 @@ describe('SrtHelper', () =>
 			fakeEditor = atom.workspace.buildTextEditor();
 			spyOn(atom.workspace, 'getActiveTextEditor').andReturn(fakeEditor);
 			spyOn(fakeEditor, 'getSelectedText').andReturn('Lorem ipsum')
+			spyOn(fakeEditor, 'decorateMarker');
 
 			SrtHelper.replaceString(fakeIterator);
 
@@ -53,6 +54,9 @@ describe('SrtHelper', () =>
 
 			// Check if the buffer is set to the position of the repaced text.
 			expect(fakeDestEditor.setCursorBufferPosition).toHaveBeenCalledWith(fakePoint, { autoscroll: false });
+
+			// Check if the text that was copied was also highlited
+			expect(fakeEditor.decorateMarker).toHaveBeenCalled();
 
 			// Teardown
 			SrtHelper.destEditor = null;
