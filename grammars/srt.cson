@@ -9,6 +9,6 @@
 	},
 	{
 		'match': '.{40,}'
-		'name': 'copied-text'
+		'name': 'out-of-bounds-text'
 	}
 ]
