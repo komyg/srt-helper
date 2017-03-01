@@ -15,7 +15,9 @@
           "label": "Srt Helper",
           "submenu": [
             { "label": "Srt copy paste", "command": "srt-helper:srtCopyPaste" },
-            { "label": "Choose destination editor",	"command": "srt-helper:srtChooseDestEditor"	}
+            { "label": "Choose destination editor",	"command": "srt-helper:srtChooseDestEditor"	},
+			{ "label": "Toggle selected text decoration", "command": "srt-helper:toggleDecorationOnOff"},
+			{ "label": "Toggle case change", "command": "srt-helper:toggleChangeCaseOnOff"}
           ]
         }
       ]

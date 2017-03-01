@@ -36,6 +36,14 @@ This command will copy the currently selected text and paste it in place of the 
 
 This command can be called through the *Packages* menu, through the context-menu or through the hot keys: **ctrl-alt-p**.
 
+### Toggle selected text decoration
+
+This command will toggle on and off a blue underline decoration under the text that was transferred to the srt file.
+
+### Toggle change case
+
+This command will toggle on and off the automatic change of UPPER CASE words to Title Case words when the text is transfered to the srt file.
+
 ## Usage
 
 When the **Srt copy paste** command is ran for the first time, it will open a dialog box which allows the user to choose the destination editor, the text editor that contains the untranslated subtitles. Once the destination editor is chosen, then each call to this command will replace the first *- Untranslated subtitle -* tag with the current selected text. If no text is selected, no replacement is made.

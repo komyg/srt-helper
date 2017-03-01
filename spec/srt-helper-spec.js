@@ -55,9 +55,6 @@ describe('SrtHelper', () =>
 			// Check if the buffer is set to the position of the repaced text.
 			expect(fakeDestEditor.setCursorBufferPosition).toHaveBeenCalledWith(fakePoint, { autoscroll: false });
 
-			// Check if the text that was copied was also highlited
-			expect(fakeEditor.decorateMarker).toHaveBeenCalled();
-
 			// Teardown
 			SrtHelper.destEditor = null;
 		});
@@ -92,12 +89,12 @@ describe('SrtHelper', () =>
 
 		it('should transform upper case string into title case string', () =>
 		{
-			let testStr = 'LOREM I1PSUM DOLOR SIT AMET, 22,';
+			let testStr = 'LOREM I1PSUM dolor SIT AMET, 22,';
 			let result;
 
 			result = SrtHelper.changeCase(testStr);
 
-			expect(result).toEqual('Lorem I1psum Dolor Sit Amet, 22,');
+			expect(result).toEqual('Lorem I1psum dolor Sit Amet, 22,');
 		});
 	});
 
@@ -171,7 +168,7 @@ describe('SrtHelper', () =>
 				// Now we can test for view visibility
 				let srtHelperElement = workspaceElement.querySelector('.srt-helper');
 				expect(srtHelperElement).toBeVisible();
-				atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
+				//atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
 			});
 		});
 
@@ -194,7 +191,48 @@ describe('SrtHelper', () =>
 				// Now we can test for view visibility
 				let srtHelperElement = workspaceElement.querySelector('.srt-helper');
 				expect(srtHelperElement).not.toBeVisible();
-				atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
+				//atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
+			});
+		});
+
+		it ('should store the toggleChangeCase and toggleDecoration status', () =>
+		{
+			SrtHelper.setDestEditor('dummy-srt-file.srt');
+
+			expect(workspaceElement.querySelector('.srt-helper')).not.toExist();
+
+			// This is an activation event, triggering it causes the package to be activated.
+			atom.commands.dispatch(workspaceElement, 'srt-helper:srtCopyPaste');
+
+			waitsForPromise(() =>
+			{
+				return activationPromise;
+			});
+
+			runs(() =>
+			{
+				let toggleChangeCase, toggleDecoration;
+
+				// These values must be set at the activation.
+				toggleDecoration = SrtHelper.toggleDecoration;
+				toggleChangeCase = SrtHelper.toggleChangeCase;
+
+				expect(toggleDecoration).not.toBeNull();
+				expect(toggleChangeCase).not.toBeNull();
+
+				// Check if the values changed.
+				atom.commands.dispatch(workspaceElement, 'srt-helper:toggleDecorationOnOff');
+				expect(toggleDecoration).not.toEqual(SrtHelper.toggleDecoration);
+
+				atom.commands.dispatch(workspaceElement, 'srt-helper:toggleChangeCaseOnOff');
+				expect(toggleChangeCase).not.toEqual(SrtHelper.toggleChangeCase);
+
+				// Return the values to their original state.
+				atom.commands.dispatch(workspaceElement, 'srt-helper:toggleDecorationOnOff');
+				expect(toggleDecoration).toEqual(SrtHelper.toggleDecoration);
+
+				atom.commands.dispatch(workspaceElement, 'srt-helper:toggleChangeCaseOnOff');
+				expect(toggleChangeCase).toEqual(SrtHelper.toggleChangeCase);
 			});
 		});
 
