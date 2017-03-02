@@ -21,9 +21,7 @@ describe('SrtHelper', () =>
 	{
 		it('should replace the - Untranslated subtitle - with the selectedText', () =>
 		{
-			let fakeEditor, fakeIterator, fakeDestEditor, fakePoint, fakeRange;
-
-			fakePoint = [1, 2];
+			let fakeEditor, fakeIterator, fakeDestEditor;
 
 			// Build fake iterator object.
 			fakeIterator = jasmine.createSpyObj('fakeIterator', ['stop', 'range', 'replace']);
@@ -31,12 +29,6 @@ describe('SrtHelper', () =>
 			fakeIterator.replace.andCallFake((replacementText) => {
 				fakeIterator.newText = replacementText;
 			});
-
-			// Build fake dest editor to test changing its cursor.
-			fakeDestEditor = jasmine.createSpyObj('fakeDestEditor', ['setCursorBufferPosition']);
-			fakeRange = jasmine.createSpyObj('fakeRange', ['start']);
-			fakeIterator.range = fakeRange;
-			fakeRange.start = fakePoint;
 
 			//fakeDestEditor.setCursorBufferPosition.andReturn('');
 			SrtHelper.destEditor = fakeDestEditor;
@@ -47,13 +39,13 @@ describe('SrtHelper', () =>
 			spyOn(fakeEditor, 'getSelectedText').andReturn('Lorem ipsum')
 			spyOn(fakeEditor, 'decorateMarker');
 
+			// Make sure this method does not interfere with the test.
+			spyOn(SrtHelper, 'scrollTextEditor').andReturn('');
+
 			SrtHelper.replaceString(fakeIterator);
 
 			// Check if the replaced text matches.
 			expect(fakeIterator.newText).toEqual('Lorem ipsum');
-
-			// Check if the buffer is set to the position of the repaced text.
-			expect(fakeDestEditor.setCursorBufferPosition).toHaveBeenCalledWith(fakePoint, { autoscroll: false });
 
 			// Teardown
 			SrtHelper.destEditor = null;
@@ -95,6 +87,58 @@ describe('SrtHelper', () =>
 			result = SrtHelper.changeCase(testStr);
 
 			expect(result).toEqual('Lorem I1psum dolor Sit Amet, 22,');
+		});
+
+		it('should scroll the text editor to the current cursor', () =>
+		{
+			let fakeEditor, fakePresenter, fakeRange, fakeRangeStart, fakeRangeEnd;
+
+			// Setup
+
+			fakePresenter = jasmine.createSpyObj('fakePresenter', ['startRow', 'endRow']);
+			fakePresenter.startRow.andReturn(0);
+			fakePresenter.endRow.andReturn(14);
+
+			fakeEditor = jasmine.createSpyObj('fakeEditor', ['presenter', 'setCursorBufferPosition', 'scrollToBufferPosition']);
+			fakeEditor.presenter.andReturn(fakePresenter);
+
+			fakeRange = jasmine.createSpyObj('fakeRange', ['start', 'end']);
+			fakeRange.start.andReturn(fakeRangeStart);
+			fakeRange.end.andReturn(fakeRangeEnd);
+
+			fakeRangeStart = jasmine.createSpyObj('fakePoint', ['row']);
+			fakeRangeStart.row.andReturn(20);
+
+			fakeRangeEnd = jasmine.createSpyObj('fakePoint', ['row']);
+			fakeRangeEnd.row.andReturn(20);
+
+			// Test
+
+			SrtHelper.scrollTextEditor(fakeEditor, fakeRange);
+
+			// Assert
+
+			// Check if the cursor was moved.
+			expect(fakeEditor.setCursorBufferPosition).toHaveBeenCalled();
+
+			// Since our range is further than the current displayed text,
+			// check if the editor was scrolled.
+			expect(fakeEditor.scrollToBufferPosition).toHaveBeenCalled();
+		});
+
+		it('should set the destinationEditor if the returned value is not null', () =>
+		{
+			spyOn(SrtHelper, 'setDestEditor');
+
+			SrtHelper.chooseDestEditorCallback(null);
+
+			// Should not call setDestEditor, because the value is null (the user clicked the cancel button)
+			expect(SrtHelper.setDestEditor).not.toHaveBeenCalled();
+
+			SrtHelper.chooseDestEditorCallback('dummy-srt-file.srt');
+
+			// Should callsetDestEditor, because the user selected a file.
+			expect(SrtHelper.setDestEditor).toHaveBeenCalledWith('dummy-srt-file.srt');
 		});
 	});
 
