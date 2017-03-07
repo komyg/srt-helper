@@ -33,24 +33,21 @@ describe('SrtHelperView', () =>
 			});
 
 			// This function is called after the fake promise is resolved.
-			spyOn(srtHelperView, 'loadPanelAndList').andCallFake((panel) =>
-			{
-				expect(panel).toBe('Fake promise');
-			});
+			spyOn(srtHelperView, 'loadPanelAndList');
 
 			spyOn(atom.workspace, 'addModalPanel').andCallThrough();
 
 			// Execute function
 			waitsForPromise(() =>
 			{
-				return srtHelperView.initAndLoadView();
+				return srtHelperView.initAndLoadView('Lorem ipsum');
 			});
 
 			// Run the tests.
 			runs(() =>
 			{
 				// Check if the necessary functions were called
-				expect(srtHelperView.loadPanelAndList).toHaveBeenCalledWith('Fake promise');
+				expect(srtHelperView.loadPanelAndList).toHaveBeenCalledWith('Fake promise', 'Lorem ipsum');
 
 				// Check if the modal panel was indeed created and is hidden
 				expect(srtHelperView.modalPanel).toBeDefined();
@@ -148,6 +145,19 @@ describe('SrtHelperView', () =>
 			// Check if the styles were changed
 			expect(lastSelectedItem.classList.contains('selected')).toBe(false);
 			expect(selectedItemParent.classList.contains('selected')).toBe(true);
+		});
+
+		it('setPanelHeading - should set the panel heading', () =>
+		{
+			// Setup
+			let fakeHeading = jasmine.createSpyObj('fakeHeading', ['textContent']);
+			spyOn(document, 'getElementById').andReturn(fakeHeading);
+
+			// Test
+			srtHelperView.setPanelHeading('Lorem ipsum');
+
+			// Assert
+			expect(fakeHeading.textContent).toEqual('Lorem ipsum');
 		});
 	});
 

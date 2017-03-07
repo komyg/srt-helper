@@ -13,7 +13,8 @@
   "activationCommands": {
     "atom-workspace": [
       "srt-helper:srtCopyPaste",
-      "srt-helper:srtChooseDestEditor"
+      "srt-helper:srtChooseDestEditor",
+	  "srt-helper:srtChooseCompanionEditor"
     ]
   },
   "repository": "https://github.com/komyg/srt-helper",

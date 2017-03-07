@@ -1,6 +1,8 @@
 'use babel';
 
 import SrtHelper from '../lib/srt-helper';
+import { Point } from 'atom';
+import { Range } from 'atom';
 
 // Use the command `window:run-package-specs` (cmd-alt-ctrl-p) to run specs.
 //
@@ -70,13 +72,10 @@ describe('SrtHelper', () =>
 			expect(SrtHelper.destEditor).toBeNull();
 
 			// Call function
-			SrtHelper.setDestEditor('dummy-srt-file.srt');
+			let chosenEditor = SrtHelper.getEditor('dummy-srt-file.srt');
 
 			// Assert
-			expect(SrtHelper.destEditor.getTitle()).toEqual('dummy-srt-file.srt');
-
-			// Teardown
-			SrtHelper.destEditor = null;
+			expect(chosenEditor.getTitle()).toEqual('dummy-srt-file.srt');
 		});
 
 		it('should transform upper case string into title case string', () =>
@@ -128,17 +127,69 @@ describe('SrtHelper', () =>
 
 		it('should set the destinationEditor if the returned value is not null', () =>
 		{
-			spyOn(SrtHelper, 'setDestEditor');
+			let fakeEditor = 'fakeEditor'
+
+			spyOn(SrtHelper, 'getEditor').andReturn(fakeEditor);
 
 			SrtHelper.chooseDestEditorCallback(null);
 
 			// Should not call setDestEditor, because the value is null (the user clicked the cancel button)
-			expect(SrtHelper.setDestEditor).not.toHaveBeenCalled();
+			expect(SrtHelper.getEditor).not.toHaveBeenCalled();
 
 			SrtHelper.chooseDestEditorCallback('dummy-srt-file.srt');
 
 			// Should callsetDestEditor, because the user selected a file.
-			expect(SrtHelper.setDestEditor).toHaveBeenCalledWith('dummy-srt-file.srt');
+			expect(SrtHelper.getEditor).toHaveBeenCalledWith('dummy-srt-file.srt');
+
+			expect(SrtHelper.destEditor).toEqual(fakeEditor);
+
+			// Teardown
+			SrtHelper.destEditor = null;
+		});
+
+		it('should find the subtitle id', () =>
+		{
+			// Create dummy text editor
+			let dummyRange, subtitleId;
+			let dummyEditor = atom.workspace.buildTextEditor();
+			dummyEditor.insertText('126\n');
+			dummyEditor.insertText('00:01:04,620 --> 00:01:07,000\n');
+			dummyEditor.insertText('- Untranslated subtitle -\n');
+			dummyEditor.insertText('\n');
+			dummyEditor.insertText('127\n');
+			dummyEditor.insertText('00:01:04,620 --> 00:01:07,000\n');
+			dummyEditor.insertText('- Untranslated subtitle -');
+
+			dummyEditor.setCursorBufferPosition([6, 0]);
+
+			// Create dummy range, to simulate the found - Untranslated Subtitle - text.
+			dummyRange = new Range(new Point(6, 0), new Point(6, 25));
+
+			// Test function
+			subtitleId = SrtHelper.getSubtitleId(dummyEditor, dummyRange);
+
+			// Assert
+			expect(subtitleId).toEqual(['127']);
+		});
+
+		it('should find the range of a given string', () =>
+		{
+			// Create dummy text editor
+			let dummyRange, range;
+			let dummyEditor = atom.workspace.buildTextEditor();
+			dummyEditor.insertText('126\n');
+			dummyEditor.insertText('00:01:04,620 --> 00:01:07,000\n');
+			dummyEditor.insertText('- Untranslated subtitle -\n');
+			dummyEditor.insertText('\n');
+			dummyEditor.insertText('127\n');
+			dummyEditor.insertText('00:01:04,620 --> 00:01:07,000\n');
+			dummyEditor.insertText('- Untranslated subtitle -');
+
+			// Test function
+			range = SrtHelper.findStrInEditor(dummyEditor, '127');
+
+			// Assert
+			expect(range.start.row).toEqual(4);
 		});
 	});
 
@@ -174,7 +225,7 @@ describe('SrtHelper', () =>
 			expect(SrtHelper.destEditor).toBeNull();
 
 			// Choose destination editor.
-			SrtHelper.setDestEditor('dummy-srt-file.srt')
+			SrtHelper.chooseDestEditorCallback('dummy-srt-file.srt')
 
 			expect(SrtHelper.destEditor.getTitle()).toEqual('dummy-srt-file.srt');
 
@@ -218,7 +269,7 @@ describe('SrtHelper', () =>
 
 		it ('does not show the view when the destination editor is set', () =>
 		{
-			SrtHelper.setDestEditor('dummy-srt-file.srt');
+			SrtHelper.chooseDestEditorCallback('dummy-srt-file.srt');
 
 			expect(workspaceElement.querySelector('.srt-helper')).not.toExist();
 
@@ -241,7 +292,7 @@ describe('SrtHelper', () =>
 
 		it ('should store the toggleChangeCase and toggleDecoration status', () =>
 		{
-			SrtHelper.setDestEditor('dummy-srt-file.srt');
+			SrtHelper.chooseDestEditorCallback('dummy-srt-file.srt');
 
 			expect(workspaceElement.querySelector('.srt-helper')).not.toExist();
 

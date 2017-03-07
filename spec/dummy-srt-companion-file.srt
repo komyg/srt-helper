@@ -1,119 +1,121 @@
 1
 00:01:04,620 --> 00:01:07,000
-- Untranslated subtitle -
+Lorem ipsum dolor sit amet,
 
 2
 00:01:20,310 --> 00:01:26,110
-- Untranslated subtitle -
+consectetur adipiscing elit.
 
 3
 00:01:30,970 --> 00:01:35,920
-- Untranslated subtitle -
+In et urna quis ipsum
+blandit feugiat vitae id ligula.
 
 4
 00:01:40,350 --> 00:01:44,950
-- Untranslated subtitle -
+Nullam euismod
+viverra mauris sed fermentum.
 
 5
 00:01:50,210 --> 00:01:52,280
-- Untranslated subtitle -
+Praesent quis venenatis felis.
 
 6
 00:01:52,740 --> 00:01:54,740
-- Untranslated subtitle -
+Mauris pellentesque feugiat massa,
 
 7
 00:01:54,950 --> 00:02:00,870
-- Untranslated subtitle -
+ac venenatis libero tristique eu.
 
 8
 00:02:02,170 --> 00:02:07,660
-- Untranslated subtitle -
+Nulla facilisi.
 
 9
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+Phasellus dictum urna vel
 
 10
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+sapien tincidunt elementum.
 
 11
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+ Nam auctor vehicula
 
 12
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+orci sit amet malesuada.
 
 13
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+Aliquam erat volutpat.
 
 14
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+Donec urna felis,
 
 15
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+sodales sed pharetra non,
 
 16
 00:01:04,620 --> 00:01:07,000
-- Untranslated subtitle -
+eleifend eu orci.
 
 17
 00:01:20,310 --> 00:01:26,110
-- Untranslated subtitle -
+Morbi lacinia malesuada faucibus.
 
 18
 00:01:30,970 --> 00:01:35,920
-- Untranslated subtitle -
+Aliquam mauris elit,
 
 19
 00:01:40,350 --> 00:01:44,950
-- Untranslated subtitle -
+pharetra vel elementum et,
 
 20
 00:01:50,210 --> 00:01:52,280
-- Untranslated subtitle -
+ullamcorper ut sapien.
 
 21
 00:01:52,740 --> 00:01:54,740
-- Untranslated subtitle -
+Integer arcu ex,
 
 22
 00:01:54,950 --> 00:02:00,870
-- Untranslated subtitle -
+euismod eu luctus nec,
 
 23
 00:02:02,170 --> 00:02:07,660
-- Untranslated subtitle -
+tristique nec purus.
 
 24
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+Praesent leo metus,
 
 25
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+tincidunt sed orci vitae,
 
 26
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+hendrerit hendrerit purus.
 
 27
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+Vestibulum blandit lectus a mi mollis
 
 28
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+finibus.
 
 29
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+Donec fermentum,
 
 30
 00:02:08,310 --> 00:02:10,710
-- Untranslated subtitle -
+magna nec luctus dapibus,
