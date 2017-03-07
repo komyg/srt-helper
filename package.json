@@ -1,7 +1,7 @@
 {
   "name": "srt-helper",
   "main": "./lib/srt-helper",
-  "version": "1.3.0",
+  "version": "1.4.0",
   "description": "This package is meant to help with the translation of srt subtitle files.",
   "keywords": [
     "srt-helper",
@@ -14,7 +14,7 @@
     "atom-workspace": [
       "srt-helper:srtCopyPaste",
       "srt-helper:srtChooseDestEditor",
-	  "srt-helper:srtChooseCompanionEditor"
+      "srt-helper:srtChooseCompanionEditor"
     ]
   },
   "repository": "https://github.com/komyg/srt-helper",
