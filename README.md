@@ -24,17 +24,23 @@ This package expects you to have a srt file template that already has the subtit
 
 This package has two commands:
 
+### Srt copy paste
+
+This command will copy the currently selected text and paste it in place of the first *- Untranslated subtitle -* tag it finds in the destination editor (the text editor that contains the untranslated subtitles).
+
+This command can be called through the *Packages* menu, through the context-menu or through the hot keys: **ctrl-alt-p**.
+
 ### Choose destination editor
 
 This command will open a modal dialog with all the text editors that are currently open in Atom, allowing the user to choose which of them contains the untranslated subtitles.
 
 This command can only be called through the *Packages* menu.
 
-### Srt copy paste
+### Choose companion editor
 
-This command will copy the currently selected text and paste it in place of the first *- Untranslated subtitle -* tag it finds in the destination editor (the text editor that contains the untranslated subtitles).
+This command will open a modal dialog with all the text editors that are currently open in Atom, allowing the user to choose which of them contains the original subtitles. Once the companion editor is selected, it will be scrolled along side the destination editor using the subtitle ID to orient itself.
 
-This command can be called through the *Packages* menu, through the context-menu or through the hot keys: **ctrl-alt-p**.
+This command can only be called through the *Packages* menu.
 
 ### Toggle selected text decoration
 
