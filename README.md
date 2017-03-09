@@ -1,6 +1,6 @@
 # SRT Helper
 
-This project is a package for the ![Atom](https://atom.io/) editor. Its goal is to help in populating a *.srt* subtitle file with translated content.
+This project is a package for the [Atom](https://atom.io/) editor. Its goal is to help in populating a *.srt* subtitle file with translated content.
 
 ## Requirements
 
@@ -76,7 +76,7 @@ This syntax highlight will be used on any *.srt* file as long as this package is
 
 ## Tests
 
-The tests can be ran through the standard test interface in Atom (they were all written using ![Jasmine](https://jasmine.github.io/))
+The tests can be ran through the standard test interface in Atom (they were all written using [Jasmine](https://jasmine.github.io/))
 
 ## Authors
 
