@@ -50,7 +50,7 @@ This command will toggle on and off the automatic change of UPPER CASE words to 
 
 ## Usage
 
-When the **Srt copy paste** command is ran for the first time, it will open a dialog box which allows the user to choose the destination editor, the text editor that contains the untranslated subtitles. Once the destination editor is chosen, then each call to this command will replace the first *- Untranslated subtitle -* tag with the current selected text. If no text is selected, no replacement is made.
+When the **srt copy paste** command is ran for the first time, it will open a dialog box which allows the user to choose the destination editor, the text editor that contains the untranslated subtitles. Once the destination editor is chosen, then each call to this command will replace the first *- Untranslated subtitle -* tag with the current selected text. If no text is selected, no replacement is made.
 
 If you want to change the destination editor, please run the **choose destination editor** command.
 
