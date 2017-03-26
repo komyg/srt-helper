@@ -191,6 +191,76 @@ describe('SrtHelper', () =>
 			// Assert
 			expect(range.start.row).toEqual(4);
 		});
+
+		it('should find and replace a subtitle time code if its difference is less than 500 milliseconds', () =>
+		{
+			let foundValue;
+			const dummyEditor = atom.workspace.buildTextEditor();
+			dummyEditor.insertText('126\n');
+			dummyEditor.insertText('00:01:04,620 --> 00:01:07,000\n');
+			dummyEditor.insertText('Lorem ipsum\n');
+			dummyEditor.insertText('\n');
+			dummyEditor.insertText('127\n');
+			dummyEditor.insertText('00:01:07,200 --> 00:01:08,000\n');
+			dummyEditor.insertText('dolor sit amet\n');
+			dummyEditor.insertText('\n');
+			dummyEditor.insertText('128\n');
+			dummyEditor.insertText('00:01:09,001 --> 00:01:09,200\n');
+			dummyEditor.insertText('consectetur adipiscing elit.\n');
+			dummyEditor.insertText('\n');
+			dummyEditor.insertText('129\n');
+			dummyEditor.insertText('00:01:09,001 --> 00:01:09,200\n');
+			dummyEditor.insertText('consectetur adipiscing elit.');
+
+			SrtHelper.linkSubtitles(dummyEditor, 500);
+
+			const srtString = '126\n' +
+												'00:01:04,620 --> 00:01:07,199\n' +
+												'Lorem ipsum\n' +
+												'\n' +
+												'127\n' +
+												'00:01:07,200 --> 00:01:08,000\n' +
+												'dolor sit amet\n' +
+												'\n' +
+												'128\n' +
+												'00:01:09,001 --> 00:01:09,200\n' +
+												'consectetur adipiscing elit.\n' +
+												'\n' +
+												'129\n' +
+												'00:01:09,001 --> 00:01:09,200\n' +
+												'consectetur adipiscing elit.';
+
+			expect(dummyEditor.getText()).toEqual(srtString);
+		});
+
+		it('should get the start and end times of a subtitle', () =>
+		{
+			let subTimeCodeStr = '00:01:04,620 --> 00:01:07,000';
+
+			let timeCode = SrtHelper.getSubtitleTimeCode(subTimeCodeStr);
+
+			expect(timeCode).toEqual({
+				start: new Date(0, 0, 0, 0, 1, 4, 620),
+				end: new Date(0, 0, 0, 0, 1, 7, 000),
+			});
+		});
+
+		it('should generate a time code string', () =>
+		{
+			let sub = { start: new Date(0, 0, 0, 0, 1, 4, 620),
+									end: new Date(0, 0, 0, 0, 1, 7, 10) };
+
+			let result = SrtHelper.generateSubtitleTimeCodeStr(sub);
+
+			expect(result).toEqual('00:01:04,620 --> 00:01:07,010');
+
+			sub = { start: new Date(0, 0, 0, 0, 0, 0, 0),
+							end: new Date(0, 0, 0, 0, 15, 27, 992) };
+
+			result = SrtHelper.generateSubtitleTimeCodeStr(sub);
+
+			expect(result).toEqual('00:00:00,000 --> 00:15:27,992');
+		});
 	});
 
 	describe('SrtHelper integration tests', () =>

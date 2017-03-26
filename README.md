@@ -24,6 +24,12 @@ This package expects you to have a *.srt* file template that already has the sub
 
 This package has the following commands:
 
+### Activate
+
+This command will only active this package. It can be used just to show the syntax highlight or for testing purposes.
+
+Note: this package can also be activated using the **srt copy paste** and the **choose destination editor commands**.
+
 ### Srt copy paste
 
 This command will copy the currently selected text and paste it in place of the first *- Untranslated subtitle -* tag it finds in the destination editor (the text editor that contains the untranslated subtitles).
@@ -37,6 +43,42 @@ This command will open a modal dialog with all the text editors that are current
 ### Choose companion editor
 
 This command will open a modal dialog with all the text editors that are currently open in Atom, allowing the user to choose which of them contains the original subtitles. Once the companion editor is selected, it will be scrolled along side the destination editor using the subtitle ID to orient itself.
+
+### Link subtitles
+
+This command opens a modal dialog in which the user can choose the minimum interval between subtitles (in milliseconds). Once the interval is chosen, each subtitle that has an interval between itself and the next subtitle that is less than or equal to the chosen default interval, will have its end timecode updated to the start of the next subtitle minus one millisecond.
+
+For example, if we say that the default interval between subtitles is 500 milliseconds, then in the example below the interval between the subtitle 4 and the subtitle 5 is of 5260 milliseconds, so they will remain unchanged. However the interval between the subtitles 5 and 6 is of 460 milliseconds, so the end of the subtitle 5 will be changed to the start of the subtitle 6 minus 1 millisecond.
+
+```
+4
+00:01:40,350 --> 00:01:44,950
+- Untranslated subtitle -
+
+5
+00:01:50,210 --> 00:01:52,280
+- Untranslated subtitle -
+
+6
+00:01:52,740 --> 00:01:54,740
+- Untranslated subtitle -
+```
+
+The updated example with the subtitles 5 and 6 linked is below (notice that the end value for the subtitle 5 was changed from *0:01:52,280* to *00:01:52,739*):
+
+```
+4
+00:01:40,350 --> 00:01:44,950
+- Untranslated subtitle -
+
+5
+00:01:50,210 --> 00:01:52,739
+- Untranslated subtitle -
+
+6
+00:01:52,740 --> 00:01:54,740
+- Untranslated subtitle -
+```
 
 ### Toggle selected text decoration
 

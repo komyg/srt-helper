@@ -1,6 +1,7 @@
 'use babel';
 
 import SrtHelperView from '../lib/srt-helper-view';
+import FileHelper from '../lib/file-helper';
 
 describe('SrtHelperView', () =>
 {
@@ -21,7 +22,7 @@ describe('SrtHelperView', () =>
 		it('initAndLoadView - should load and initialize the view', () =>
 		{
 			// Setup spies
-			spyOn(srtHelperView, 'getFileLoadPromise').andCallFake(() =>
+			spyOn(FileHelper, 'getFileLoadPromise').andCallFake(() =>
 			{
 				// Setup fake file load promise
 				let fakePromise = new Promise((resolve) =>
@@ -158,37 +159,6 @@ describe('SrtHelperView', () =>
 
 			// Assert
 			expect(fakeHeading.textContent).toEqual('Lorem ipsum');
-		});
-	});
-
-	describe('File load integration test', () =>
-	{
-		it('should load the contents of a file', () =>
-		{
-			let fileLoadPromise, fileContent, fileLoaded;
-
-			runs(() =>
-			{
-				fileLoaded = false;
-
-				fileLoadPromise = srtHelperView.getFileLoadPromise('file://' + __dirname + '/dummy-file.txt');
-				fileLoadPromise.then((result) =>
-				{
-					fileContent = result;
-					fileLoaded = true;
-				});
-			});
-
-			// Waits until file is loaded
-			waitsFor(() =>
-			{
-				return fileLoaded;
-			});
-
-			runs(() =>
-			{
-				expect(fileContent).toContain('Lorem ipsum');
-			});
 		});
 	});
 
