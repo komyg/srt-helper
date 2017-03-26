@@ -1,7 +1,7 @@
 {
   "name": "srt-helper",
   "main": "./lib/srt-helper",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "This package is meant to help with the translation of srt subtitle files.",
   "keywords": [
     "srt-helper",
@@ -12,7 +12,7 @@
   ],
   "activationCommands": {
     "atom-workspace": [
-			"srt-helper:activate",
+      "srt-helper:activate",
       "srt-helper:srtCopyPaste",
       "srt-helper:srtChooseDestEditor",
       "srt-helper:srtChooseCompanionEditor"
