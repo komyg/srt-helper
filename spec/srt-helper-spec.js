@@ -90,16 +90,20 @@ describe('SrtHelper', () =>
 
 		it('should scroll the text editor to the current cursor', () =>
 		{
-			let fakeEditor, fakePresenter, fakeRange, fakeRangeStart, fakeRangeEnd;
+			let fakeEditor, fakeElement, fakeRange, fakeRangeStart, fakeRangeEnd;
+
+			fakeEditor = atom.workspace.buildTextEditor();
+
+			// Check if the methods we are using are actually available.
+			expect(fakeEditor.element).toBeTruthy();
+			expect(fakeEditor.element.getFirstVisibleScreenRow).toBeTruthy();
+			expect(fakeEditor.element.getLastVisibleScreenRow).toBeTruthy();
 
 			// Setup
-
-			fakePresenter = jasmine.createSpyObj('fakePresenter', ['startRow', 'endRow']);
-			fakePresenter.startRow.andReturn(0);
-			fakePresenter.endRow.andReturn(14);
-
-			fakeEditor = jasmine.createSpyObj('fakeEditor', ['presenter', 'setCursorBufferPosition', 'scrollToBufferPosition']);
-			fakeEditor.presenter.andReturn(fakePresenter);
+			spyOn(fakeEditor.element, 'getFirstVisibleScreenRow').andReturn(0);
+			spyOn(fakeEditor.element, 'getLastVisibleScreenRow').andReturn(14);
+			spyOn(fakeEditor, 'setCursorBufferPosition');
+			spyOn(fakeEditor, 'scrollToBufferPosition');
 
 			fakeRange = jasmine.createSpyObj('fakeRange', ['start', 'end']);
 			fakeRange.start.andReturn(fakeRangeStart);
