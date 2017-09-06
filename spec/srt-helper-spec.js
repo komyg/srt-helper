@@ -104,7 +104,7 @@ describe('SrtHelper', () =>
 			spyOn(fakeEditor.element, 'getLastVisibleScreenRow').andReturn(14);
 			spyOn(fakeEditor, 'setCursorBufferPosition');
 			spyOn(fakeEditor, 'scrollToBufferPosition');
-
+			
 			fakeRange = jasmine.createSpyObj('fakeRange', ['start', 'end']);
 			fakeRange.start.andReturn(fakeRangeStart);
 			fakeRange.end.andReturn(fakeRangeEnd);
